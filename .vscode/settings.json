@@ -1,0 +1,23 @@
+{
+  // Flux — VS Code Workspace Settings
+  // Shared formatting and editor preferences for all contributors.
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Point TS language service to the project's own TypeScript
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+
+  // Enforce LF line endings to match .gitattributes
+  "files.eol": "\n",
+
+  // Hide noisy directories from search results
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.venv": true
+  }
+}
