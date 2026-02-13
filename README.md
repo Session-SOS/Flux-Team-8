@@ -151,16 +151,96 @@ Flux uses a **multi-agent architecture** where five specialized AI agents work i
 
 ### Prerequisites
 
-- Node.js 18+
-- Python 3.11+
-- Supabase account (or local PostgreSQL)
+- **Node.js 18+** — [Install](https://nodejs.org)
+- **Python 3.11+** — [Install](https://python.org)
+- **Docker Desktop** — [Install for Mac](https://docs.docker.com/desktop/install/mac-install/) (must be running)
+- **Supabase CLI** — Install via Homebrew:
+  ```bash
+  brew install supabase/tap/supabase
+  ```
 
-### Installation
+### Quick Start (Recommended)
+
+The setup script handles everything — dependencies, Supabase, and environment files:
+
+```bash
+git clone https://github.com/MacDavicK/Flux-Team-8.git
+cd Flux-Team-8
+bash scripts/setup.sh
+```
+
+> **Note:** The first run downloads ~2-3 GB of Docker images for Supabase. Subsequent runs are fast.
+
+After setup completes:
+
+```bash
+# Terminal 1 — Frontend
+cd frontend && npm run dev
+
+# Terminal 2 — Backend
+cd backend && source venv/bin/activate && uvicorn main:app --reload
+```
+
+### Supabase Local Development
+
+Supabase runs entirely in Docker on your machine. No cloud account needed for local dev.
+
+| Service | URL |
+|---------|-----|
+| Studio (Dashboard) | http://127.0.0.1:54323 |
+| API (Project URL) | http://127.0.0.1:54321 |
+| Database | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
+| Email Testing (Mailpit) | http://127.0.0.1:54324 |
+
+**Useful commands:**
+
+```bash
+supabase status    # Show local URLs and keys
+supabase stop      # Stop all Supabase containers
+supabase start     # Restart (fast after first run)
+supabase db reset  # Reset database and re-apply all migrations
+```
+
+**Setting up the database with test data:**
+
+After `supabase start` (or as part of initial setup), run:
+
+```bash
+# Apply migrations (creates all tables)
+supabase db reset
+
+# Load sample data for development
+docker cp supabase/scripts/seed_test_data.sql supabase_db_Flux-Team-8:/tmp/seed_test_data.sql
+docker exec supabase_db_Flux-Team-8 psql -U postgres -f /tmp/seed_test_data.sql
+```
+
+This seeds 3 users, 4 goals, 8 milestones, 7 tasks, 3 conversations, and demo flags — enough to exercise every feature locally.
+
+**Other database utility scripts:**
+
+| Script | Purpose | Command |
+|--------|---------|---------|
+| `truncate_tables.sql` | Delete all rows, keep schema | `docker cp supabase/scripts/truncate_tables.sql supabase_db_Flux-Team-8:/tmp/truncate_tables.sql && docker exec supabase_db_Flux-Team-8 psql -U postgres -f /tmp/truncate_tables.sql` |
+| `drop_tables.sql` | Drop all tables and enums | `docker cp supabase/scripts/drop_tables.sql supabase_db_Flux-Team-8:/tmp/drop_tables.sql && docker exec supabase_db_Flux-Team-8 psql -U postgres -f /tmp/drop_tables.sql` |
+
+> For full database schema details, enum definitions, and entity relationships, see [`supabase/README.md`](supabase/README.md).
+
+### Manual Installation
+
+If you prefer to set things up step by step:
 
 ```bash
 # Clone the repository
 git clone https://github.com/MacDavicK/Flux-Team-8.git
 cd Flux-Team-8
+
+# Start Supabase (Docker Desktop must be running)
+supabase start
+supabase db reset
+
+# Seed test data (optional but recommended)
+docker cp supabase/scripts/seed_test_data.sql supabase_db_Flux-Team-8:/tmp/seed_test_data.sql
+docker exec supabase_db_Flux-Team-8 psql -U postgres -f /tmp/seed_test_data.sql
 
 # Frontend
 cd frontend
