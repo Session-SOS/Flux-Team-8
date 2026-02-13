@@ -311,12 +311,12 @@ sequenceDiagram
 
 | Name | Role | GitHub |
 |------|------|--------|
-| Harshal Kale | Team Leader | [@placeholder](#) |
+| Harshal Kale | Team Leader | [@harshalkale](#) |
 | Session Mwamufiya | | [@placeholder](#) |
-| Krishnan Iyer | | [@placeholder](#) |
+| Krishnan Iyer | | [@kiyer1974](#) |
 | Sathish Kulal | | [@placeholder](#) |
 | Hima | | [@placeholder](#) |
-| Kavish Jaiswal | | [@placeholder](#) |
+| Kavish Jaiswal | | [@MacDavicK](#) |
 
 ---
 
